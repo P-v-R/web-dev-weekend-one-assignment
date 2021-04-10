@@ -15,16 +15,17 @@ class Vehicle{
     }
 }
 
-/* create a class for a Car which inherits from the Vehicle class but adds a property for number of wheels  */
+/* create a class for a Car which inherits from the Vehicle class but adds a set numWheels property of 4 */
 
 class Car extends Vehicle{
-    constructor(make, model, year, numWheels){
+    constructor(make, model, year){
         super(make, model, year);
-        this.numWheels = numWheels;
+        this.numWheels = 4
     }
 }
 
 /* creates a class for a motorcycle which inherits from a Vehicle class, a set numWheels property of 2 and a revEngine method that returns the string "VROOM!!!" */ 
+
 class Motorcycle extends Vehicle {
     constructor(make, model, year){
         super(make, model, year);
@@ -36,5 +37,47 @@ class Motorcycle extends Vehicle {
     }
 
 }
+
+class Vehicles {
+    constructor(capacity){
+        this.vehicles = [];
+        this.capacity = capacity;
+    }
+
+    checkVehicle = (vehicle) => {
+        if(vehicleToAdd.constructor.name ==="Car" || vehicleToAdd.constructor.name === "Motorcycle"){
+            console.log("working with check")
+        } else {
+            console.log("check failed")
+        }
+    }
+
+    add(vehicleToAdd){
+        if(vehicleToAdd.constructor.name ==="Car" || vehicleToAdd.constructor.name === "Motorcycle"){
+            if (this.vehicles.length < this.capacity){
+                this.vehicles.push(vehicleToAdd.constructor.name);
+                console.log(`${vehicleToAdd.constructor.name} added!`)
+            } else {
+                return console.log("Sorry, we’re full.");
+            }
+        } else {
+            console.log("only Vehicles can enter!")
+        }
+    }
+}
+
+
+
+
+
+let carA = new Car("saab", "900 turbo", 1995)
+let bikeB = new Motorcycle("toyota","dragon",1990)
+
+let newGarage = new Vehicles(2);
+
+newGarage.add(carA)
+newGarage.add(bikeB)
+newGarage.add(carA)
+
 
 

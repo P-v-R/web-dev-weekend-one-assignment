@@ -20,11 +20,10 @@ const raceTrack = document.getElementById("race-track");
 let raceTrackWidth = raceTrack.offsetWidth;
 let finishLineLocation = raceTrackWidth - FINISH_LINE_OFFSET;
 
-
-  //  each instance of race should have the following properties:
-  //  - contestants: two seperate instances of contensant class
-  //  - raceWinner: the winner of the race {}
-  //  - raceTimerId: a setIntervalID that will be used to clear timer 
+//  each instance of race should have the following properties:
+//  - contestants: two seperate instances of contensant class
+//  - raceWinner: the winner of the race {}
+//  - raceTimerId: a setIntervalID that will be used to clear timer 
 
 class Race {
 
@@ -39,11 +38,10 @@ class Race {
     this.raceTimerID = setInterval(this.racing, TIME_BETWEEN_STEPS_MS)
     console.log("race started")
   }
-  
-  racing = () => {
 
-    /* first checks if anyone has passed finish line, if yes alert user, end race and return
+  /* first checks if anyone has passed finish line, if yes alert user, end race and return
      winning contestant, if not, move both contestants up a randomly intervaled step */
+  racing = () => {
 
     if (this.checkForWinner()) {
       console.log("assigning winner");
@@ -115,7 +113,7 @@ class Contestant {
     this.htmlStepDisplay.innerText = `${this.emoji} steps: ${this.stepsTaken.toFixed(0)}`;
   }
 }
-  /* when start button is clicked a new instance of Race class is called */
+/* when start button is clicked a new instance of Race class is called */
 function handleStartBtn() {
   const race = new Race(c1, c2);
   race.startRace();
@@ -123,7 +121,7 @@ function handleStartBtn() {
 
 /* sets up racetrack and keeps its sizing proportionate to screen  */
 function main() {
-  
+
   // default position of html finish line- 200px before end of race track
   finishLine.style.left = `${finishLineLocation}px`;
 

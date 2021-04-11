@@ -1,5 +1,4 @@
 
-// Write a function called sortAlmostSorted which accepts an array of numbers that are sorted except for a single pair and returns a sorted array.
 
 // function only need to loop through the array once, 
 // function will raise two pointers, pointer one(p1) is assigned when our loop finds the first out of order number
@@ -8,11 +7,10 @@
 // to find the miss-matched numbers we need to look for...
     // p1 = if numbers[idx] > numbers[idx+1] and both pointers are undefined
     // p2 = if numbers[idx] < numbers[idx-1] AND p1 has been already been found
-
 // if the array is less than one, or already sorted, return original array
 
-/*  accepts an array of numbers that are sorted except for a single pair and returns a sorted array.    [1,2,4,5,3] >>> [1,2,3,4,5] */
-
+/*  accepts an array of numbers that are sorted except for a single pair and
+    returns a sorted array.    [1,2,4,5,3] >>> [1,2,3,4,5] */
 function sortAlmostSorted(numbers) {
     let p1 = false
     let p2;

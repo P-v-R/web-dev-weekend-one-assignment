@@ -16,10 +16,10 @@
 function sortAlmostSorted(numbers) {
     let p1 = false
     let p2;
+    // checks if array is long enough for function to run, if not return original array
     if (numbers.length <= 1){
         return numbers
     }
-    
     for(let i = 0;i<numbers.length; i++){
         // if num[i] is < num[i+1] AND p1 has yet to be assigned... this is the first off number
         if(numbers[i] > numbers[i+1] && !p1 && p1 !== 0 ){
@@ -38,10 +38,3 @@ function sortAlmostSorted(numbers) {
     return numbers
 }
 
-// sortAlmostSorted([1, 2, 3, 7, 5, 6, 4]); // [1, 2, 3, 4, 5, 6, 7]
-// sortAlmostSorted([1, 2, 6, 4, 5, 3]);    // [1, 2, 3, 4, 5, 6]
-// sortAlmostSorted([-1, 1, 0, 2]);         // [-1, 0, 1, 2]
-// sortAlmostSorted([2, 1]);                // [1, 2]
-// sortAlmostSorted([]);                    // []
-
-sortAlmostSorted([4, 2, 3, 1, 5, 6, 7])

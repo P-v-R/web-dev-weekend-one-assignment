@@ -5,4 +5,10 @@ function testFunc(a,b,...rest){
     })
     return firstTwo+addRest
 }
-console.log(testFunc(2,2,3,3))
+// console.log(testFunc(2,2,3,3))
+
+function rando(){
+    return Math.random() * (100 - 1) + 1;
+}
+
+console.log(rando())

@@ -16,11 +16,7 @@ function findMultiples(numbers, targetValue) {
     })
 }
 
+/* TO WHOEVER IS READING THIS CODE.... I wasnt quite sure how the time complexity worked out in 
+    this script. would love to go over that with you to get a better understanding */
 
-console.log(findMultiples([5, 6, 7, 5, 6, 5], 1)); // [5, 6, 7]
-console.log(findMultiples([5, 6, 7, 5, 6, 5], 2)); // [5, 6]
-console.log(findMultiples([5, 6, 7, 5, 6, 5], 3)); // [5]
-console.log(findMultiples([5, 6, 7, 5, 6, 5], 4)); // []
-
-
-
+console.log(findMultiples([5, 6, 7, 5, 6, 5], 2))

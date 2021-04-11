@@ -1,5 +1,4 @@
 "use strict";
-
 /** Emoji Race
  *
  * Two emojis race one another when "Start Race" button clicked
@@ -18,76 +17,74 @@ const MAX_STEPS = 20;
 const finishLine = document.getElementById("finish-line");
 const raceTrack = document.getElementById("race-track");
 
-let finishLineLocation = raceTrackWidth - FINISH_LINE_OFFSET;
 let raceTrackWidth = raceTrack.offsetWidth;
+let finishLineLocation = raceTrackWidth - FINISH_LINE_OFFSET;
 
+
+  //  each instance of race should have the following properties:
+  //  - contestants: two seperate instances of contensant class
+  //  - raceWinner: the winner of the race {}
+  //  - raceTimerId: a setIntervalID that will be used to clear timer 
 
 class Race {
-  //  TODO:
-  //  each instance of race should have the following properties:
-  //  - contestants: the race contestants[{}, {}] passed into constructor
-  //  - raceWinner: the winner of the race {}
-  //  - raceTimerId: a setIntervalID that will be used to clear timer (you'll
-  //    assign this value in startRace)
+
+  constructor(c1, c2) {
+    this.contestants = [c1, c2];
+    this.raceWinner;
+    this.raceTimerID;
+  }
 
   startRace() {
-    // YOU'LL NEED TO IMPLEMENT THIS CODE IN ORDER FOR THE "Start Race" BUTTON
-    // TO WORK
-
-    // TODO:
-    // - use setInterval to schedule repeated execution of the racing method
-    // - use TIME_BETWEEN_STEPS_MS global variable as the delay between
-    //   execution of racing
-    //
-    // - the value of the raceTimerId property should be the setIntervalId
-    //   (assign the value here)
+    // assigns raceTimerID to begin race(racing function) until a winner is determined.
+    this.raceTimerID = setInterval(this.racing, TIME_BETWEEN_STEPS_MS)
+    console.log("race started")
   }
+  
+  racing = () => {
 
-  racing() {
-    //
-    // TODO:
-    // invoke the checkForWinner method to determine if there is a winner yet
-    // - if there is a winner, update the raceWinner property with the
-    //   contestant instance object, invoke the endRace method to end the race,
-    //   and return from this function
-    //
-    // - if no winner yet, invoke the Contestant instance method
-    //  "move" on both contestants to move them forward in the race
+    /* first checks if anyone has passed finish line, if yes alert user, end race and return
+     winning contestant, if not, move both contestants up a randomly intervaled step */
+
+    if (this.checkForWinner()) {
+      console.log("assigning winner");
+      this.raceWinner = this.checkForWinner();
+      return this.endRace();
+    } else {
+      this.contestants[0].move();
+      this.contestants[1].move();
+    }
   }
-
-  checkForWinner() {
+  /* checks for and returns winning contestant */
+  checkForWinner = () => {
+    console.log("check for winner is being called")
     const [c1, c2] = this.contestants;
 
     // have a winner if a contestant's stepsTaken is >= the finish line location
     const haveWinner = (
-        c1.stepsTaken >= finishLineLocation ||
-        c2.stepsTaken >= finishLineLocation);
+      c1.stepsTaken >= finishLineLocation ||
+      c2.stepsTaken >= finishLineLocation);
+    console.log(haveWinner);
 
-    // MAKE SURE YOUR CODE GOES BELOW THIS LINE
-    //
-    // TODO:
-    // - check for winner and return the contestant instance object
-    //   of winner (or undefined if no winner yet)
+    if (haveWinner && c1.stepsTaken >= c2.stepsTaken) {
+      return c1;
+    } else if (haveWinner) {
+      return c2;
+    }
+  }
+  /* when winner is determined, stop moving contestants and call announceWinner fuction */
+  endRace = () => {
+    clearInterval(this.raceTimerID);
+    this.announceWinner(this.raceWinner)
   }
 
-  endRace() {
-    // TODO:
-    // - use the raceTimerId to clear the interval that stops the racing method
-    //   from being called
-    // - invoke announceWinner method (pass in the winner instance object) to
-    //   display the winner of race in the DOM
-  }
-
-  announceWinner(contestant) {
-    // TODO:
-    // - craft and display a message in the DOM announcing the winning emoji of
-    //   race and number of steps taken by the winner (there is already an html
-    //   element for this)
-    //
+  /* pops up an alert stating the race winner and their total steps */
+  announceWinner = (contestant) => {
+    console.log("this for annWin -", this)
+    setTimeout(alert(`We have a winner! ${this.raceWinner.emoji} with ${this.raceWinner.stepsTaken.toFixed(0)} total steps!`))
   }
 }
 
-
+/* blueprint for contestants for race, identified by an emoji, tracks location on html, and total steps */
 class Contestant {
   constructor(emoji, htmlLocation, htmlStepDisplay) {
     this.emoji = emoji;
@@ -99,43 +96,38 @@ class Contestant {
     this.updateHtmlSteps();
   }
 
-  /** move: makes contestant take a random number of steps (pixels). */
-  move() {
-    // TODO:
-    // - invoke the randomSteps method to generate a random number of steps to
-    //   move a contestant forward
-    // - add this random number of steps to the contestant's stepsTaken
-    //   property
+  /* move: makes contestant take a random number of steps (pixels). */
+  move = () => {
 
-    // MAKE SURE YOUR CODE GOES ABOVE THIS LINE
+    this.stepsTaken += this.randomSteps()
+    /* updates display, both emoji position and total steps */
     this.htmlLocation.style.left = `${this.stepsTaken}px`;
-
-    // update steps displayed in DOM
     this.updateHtmlSteps();
   }
 
+  /* returns a random number to be sent to contestants move function */
   randomSteps() {
-    // TODO:
-    // - return a random integer between the MIN_STEPS and MAX_STEPS global
-    //   variables
+    return Math.random() * (MAX_STEPS - MIN_STEPS) + MIN_STEPS;
   }
 
-  /** updateHtmlSteps: update a contestant's steps displayed in DOM */
+  /* update a contestant's steps displayed in DOM */
   updateHtmlSteps() {
-    this.htmlStepDisplay.innerText = `${this.emoji} steps: ${this.stepsTaken}`;
+    this.htmlStepDisplay.innerText = `${this.emoji} steps: ${this.stepsTaken.toFixed(0)}`;
   }
 }
-
+  /* when start button is clicked a new instance of Race class is called */
 function handleStartBtn() {
   const race = new Race(c1, c2);
   race.startRace();
 }
 
+/* sets up racetrack and keeps its sizing proportionate to screen  */
 function main() {
+  
   // default position of html finish line- 200px before end of race track
   finishLine.style.left = `${finishLineLocation}px`;
 
-  // update position of html finish line when window resized
+  // updates position of html finish line when window resized
   window.addEventListener("resize", () => {
     raceTrackWidth = raceTrack.offsetWidth;
     finishLineLocation = raceTrackWidth - FINISH_LINE_OFFSET;
@@ -144,7 +136,6 @@ function main() {
 
   // create and start a new race
   document.getElementById("start-race").addEventListener("click", handleStartBtn);
-
 }
 
 // DO NOT CHANGE ANY CODE BELOW THIS LINE
@@ -157,7 +148,7 @@ const c2HtmlLocation = document.getElementById("contestant-2");
 const c1HtmlStepDisplay = document.getElementById("contestant-1-steps");
 const c2HtmlStepDisplay = document.getElementById("contestant-2-steps");
 
-const c1 = new Contestant("🎃", c1HtmlLocation, c1HtmlStepDisplay);
-const c2 = new Contestant("🐧", c2HtmlLocation, c2HtmlStepDisplay);
+const c1 = new Contestant("🦧", c1HtmlLocation, c1HtmlStepDisplay);
+const c2 = new Contestant("🚣‍♀️", c2HtmlLocation, c2HtmlStepDisplay);
 
 main();
